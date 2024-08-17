@@ -18,6 +18,63 @@ const parenthesisArray = ['(',')'];
 document.addEventListener('DOMContentLoaded', function () {
     const display = document.getElementById('textDisplay');
     const buttons = document.querySelectorAll('#calculatorContainer button');
+    
+    // Function to simulate a button press
+    function pressButton(value) {
+        buttons.forEach(button => {
+            if (button.textContent === value) {
+                button.click();
+            }
+        });
+    }
+
+    // Handle key presses
+    document.addEventListener('keydown', function (event) {
+        const key = event.key;
+
+        switch (key) {
+            case '+':
+                pressButton('+');
+                break;
+            case '-':
+                pressButton('-');
+                break;
+            case '*':
+                pressButton('x');
+                break;
+            case 'x':
+                pressButton('x');
+                break;
+            case '/':
+                pressButton('÷');
+                break;
+            case '(':
+                pressButton('(');
+                break;
+            case ')':
+                pressButton(')');
+                break;
+            case '%':
+                pressButton('%');
+                break;
+            case '.':
+                pressButton('.');
+                break;
+            case 'Enter':
+                document.getElementById('btnEqual').click();
+                break;
+            case '=':
+                document.getElementById('btnEqual').click();
+                break;
+            default:
+                if (!isNaN(key)) {
+                    pressButton(key); // Numbers
+                }
+                break;
+        }
+    });
+
+    
     // All of the buttons
     buttons.forEach(button => {
         button.addEventListener('click', function () {
@@ -32,6 +89,19 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    // Backspace
+    // Handle backspace key
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Backspace') {
+            if (display.textContent.length > 1) {
+                display.textContent = display.textContent.slice(0, -1);
+            } else {
+                display.textContent = '0'; // Reset to 0 if display is empty
+            }
+        }
+    });
+
     // Reset button
     document.getElementById('btnReset').addEventListener('click', function () {
         display.textContent = '0';
@@ -119,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (display.textContent == 'ERROR'){
             return;
         }
-        
+        console.log(arrayDisplay);
         // Execute operation
         const result = evaluateExpression(arrayDisplay);
         display.textContent = truncateToFiveDecimals(result);
